@@ -1,0 +1,35 @@
+<h4 class="border-bottom text-uppercase">Manage Categories</h4>
+<div class="row">
+    <div class="col-md-3">
+        <form class="form-horizontal" method="POST" (submit)="submit()">
+            <div class="form-group">
+                <label class="control-label">Name:</label>
+                <input type="text" name="name" required [(ngModel)]="category.name" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Parent:</label>
+                <select class="form-control" [(ngModel)]="category.parent_id" name="parent">
+                    <option value="0">None</option>
+                    <option *ngFor="let option of parentCategories" [ngValue]="option.id">{{ option.name }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-9">
+        <table class="table table-bordered table-condensed table-striped" *ngIf="categories.length > 0">
+            <tr>
+                <th>Name</th>
+                <th>Parent</th>
+                <th>Action</th>
+            </tr>
+            <tr *ngFor="let cat of categories">
+                <td>{{ cat.name }}</td>
+                <td>{{ cat.parent_id }}</td>
+                <td><i class="fas fa-edit" (click)="edit(cat)"></i> &nbsp; <i class="far fa-trash-alt" (click)="delete(cat)"></i></td>
+            </tr>
+        </table>
+    </div>
+</div>

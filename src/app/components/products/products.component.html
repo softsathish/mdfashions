@@ -1,0 +1,107 @@
+<h4 class="pageHeader border-bottom" *ngIf="filters.name">{{ formatFilterName(filters.name) }} ({{total}})</h4>
+<form class="form-horizontal" method="post" (submit)="filterProducts()" *ngIf="options.loadMore">
+    <div class="input-group mb-3">
+        <input type="text" name="filtertext" [(ngModel)]="filters.text" class="form-control" placeholder="Enter Product Title, Description etc..," />
+        <div class="input-group-append">
+          <button class="btn btn-primary" id="button-addon2">Search</button>
+        </div>
+      </div>
+</form>
+<div *ngIf="total> 0 && options.loadMore">{{ products.length }} <i>of</i> {{ total }} products displayed</div>
+<div class="m-0 p-0 row" #scrollframe (scroll)="scrolled($event)">
+    <div *ngFor="let product of products; let i=index" class="col-md-6 col-12 p-0 p-md-2" [id]="'product_' + i" #item>
+        
+        <div *ngIf="product.status === '0' || (product.productID && product.productID.status === '0')">
+            <div class="row my-1 m-md-2 productRow">
+                <div class="col-5 pr-0"><app-images [product]="product" classNames="list"></app-images></div>
+                <div class="col-7 pl-1">
+                    <h6 class="ellipsisText m-0"><a [target]="options.linkTarget" [routerLink]="productURL(product.id, product.title)">{{ escapeChars(product.title) }}</a></h6>
+                    <div>
+                        <div *ngIf="!product.offerPrice"><b>₹ {{ product.price }}</b></div>
+                        <div *ngIf="product.offerPrice"><del class="text-danger">₹ {{ product.price }}</del> &nbsp; <b class="text-success">₹ {{ product.offerPrice }}</b></div>
+                    </div>
+                    <div *ngIf="product.offerPrice" class="offerBlock">
+                        <!-- <countdown-timer [end]="product.offerEnd"></countdown-timer> -->
+                        <span class="small text-uppercase">Offer Ends in</span>
+                        <app-ng-countdowner [countDownTimerVisible]="true" [start]="'10/5/2017 20:21:40'"
+                        [end]="product.offerEnd" (timerExpired)="offerExpired($event, product)"></app-ng-countdowner>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-condensed small text-muted mb-0">
+                            <tr>
+                                <th class="p-0 text-uppercase">Shipping</th>
+                                <th class="p-0">Returns</th>
+                            </tr>
+                            <tr>
+                                <td class="p-0">
+                                    <span *ngIf="product.free_shipping" class="text-success"><i class="fas fa-check-circle"></i> Free</span>
+                                    <span *ngIf="!product.free_shipping" class="text-danger"><i class="fas fa-times-circle"></i> Extra</span>
+                                </td>
+                                <td class="p-0">
+                                    <span *ngIf="product.returns" class="text-success"><i class="fas fa-check-circle"></i> Free</span>
+                                    <span *ngIf="!product.returns" class="text-danger"><i class="fas fa-times-circle"></i> Not Available</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div *ngFor="let variant of formatVariants(product.variants) | keyvalue">
+                        <span class="text-uppercase small">{{ variant.key }} : </span>
+                        <span class="text-uppercase small">{{ variant.value }}</span>
+                    </div>
+                    <div class="lastRow border-top pt-1 mt-2">
+                        <div>{{ product.views }} views | {{ product.orderCnt }} orders</div>
+                        <div class="input-group p-0">
+                            <a [routerLink]="productURL(product.id, product.title)" [target]="options.linkTarget">
+                                <div class="input-group-prepend mr-1 m-0"><i class="fas fa-eye"></i></div>
+                                <div class="text">View Detail</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mb-2" *ngIf="total> 0 && options.loadMore">{{ products.length }} <i>of</i> {{ total }} products displayed</div>
+    <button type="button" class="btn btn-outline-success" (click)="loadMore()"
+    *ngIf="total > products.length && options.loadMore">Load More</button>
+    <div *ngIf="total === products.length" class="text-right w-100">
+        <label class="btn btn-outline-success">Thats all folks.</label>
+        <a (click)="scrollTop()" *ngIf="total > 0"><i class="fas fa-arrow-circle-up"></i> Back to Top</a>
+    </div>
+</div>
+<div class="stickyFooter">
+    <div class="row">
+        <div class="col-6 pr-0">
+            <div class="dropdown">
+                <button class="btn btn-success rounded-0"  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+                    <span class="text-left"><i class="fas fa-exchange-alt sortIcon"></i> Sort</span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" (click)="sortProducts('latest')">Latest</a>
+                    <a class="dropdown-item" (click)="sortProducts('priceAsc')">Price - Low to High</a>
+                    <a class="dropdown-item" (click)="sortProducts('priceDesc')">Price High to Low</a>
+                    <a class="dropdown-item" (click)="sortProducts('views')">Most Views</a>
+                  </div>
+            </div>
+        </div>
+        <div class="col-6 pl-0">
+            <button class="btn btn-success rounded-0"  type="button" id="filterMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+                <span class="text-left"><i class="fas fa-filter"></i> Filter</span>
+            </button>
+            <div class="dropdown-menu p-3 bg-light border" aria-labelledby="filterMenuButton">
+                <form class="form-horizontal" method="POST" (submit)="filterProducts()">
+                    <div class="form-group">
+                        <label>Price Range:</label>
+                        <div class="row">
+                            <div class="col">Min:<input type="number" class="form-control" [(ngModel)]="filters.minPrice" name="minPrice" /></div>
+                            <div class="col">Max:<input type="number" class="form-control" [(ngModel)]="filters.maxPrice" name="maxPrice" /></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary">Filter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

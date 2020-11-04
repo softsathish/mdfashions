@@ -1,0 +1,23 @@
+.variantsTable {
+    .form-control {
+        width: auto !important;
+        display: inline-block;
+        margin: 0px 5px;
+    }
+}
+.images {
+    width: 100vw;
+    overflow: auto;
+    display: flex;
+    span {
+        max-width: 100px;
+        max-height: 100px;
+        display: inline-block;
+        &.selected {
+            border: 2px solid green;
+        }
+        img {
+            max-width: 100%; max-height: 100%;
+        }
+    }   
+}

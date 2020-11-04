@@ -1,0 +1,71 @@
+.pageHeader {
+    font-size: 20px;
+    text-transform: capitalize;
+}
+h6 {
+    a {
+        font-size: 12px;
+        color: black; font-weight: 600;
+    }
+}
+.priceRow {
+    text-align: left;
+    i {
+        padding:4px;
+    }
+}
+.sale {
+    position: absolute; right: 0px; background-color: green;
+    color: white; font-size: 10px; padding: 2px 10px;
+    text-transform: uppercase;animation: blinker 2s linear infinite;
+    z-index: 99;
+}
+@keyframes blinker {
+    50% {
+      opacity: 0.10;
+    }
+  }
+.btn-outline-success {
+    width: 100%; border-radius: 0px;
+}
+.productRow {
+    border-bottom: 1px solid #333333;
+    .small {
+        font-size: 11px;
+    }
+}
+.lastRow {
+    display: flex; flex-direction: row; justify-content: space-between;
+    .input-group {
+        width: auto; display: inline-flex;
+        a {
+            display: flex; text-decoration: none; color: inherit
+        }
+    }
+    font-size: 11px; text-transform: uppercase; font-weight: 600;
+    i {
+        font-size: 15px; color: green; vertical-align: text-top;
+    }
+    
+}
+.shipping {
+    font-size: 10px;
+}
+.stickyFooter {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    .btn {
+        width: 100%;
+        height: 100%;
+        margin-top: 22px;
+        display: flex;
+        justify-content: center;
+        border: 1px solid #ffffff;
+        border-style: solid solid none none;
+        .sortIcon {
+            transform: rotate(90deg);
+        }
+    }
+}

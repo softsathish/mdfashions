@@ -1,0 +1,21 @@
+<div class="productImages {{ classNames }} row">
+    <div class="mainImage col-md-10" [ngClass]="{'p-0 col-10': classNames !== 'list'}">
+        <div *ngIf="classNames === 'list'">
+            <a [routerLink]="productURL(product.id, product.title, product.image)">
+                <img src="https://www.mdcart.in/upload/{{product.image}}" />
+            </a>
+        </div>
+        <div *ngIf="classNames !== 'list'">
+            <a class="fullscreen" target="_blank" href="https://www.mdcart.in/upload/{{product.image}}"
+                *ngIf="classNames !== 'list'"><i class="fas fa-expand"></i></a>
+            <img src="https://www.mdcart.in/upload/{{product.image}}" />
+        </div>
+    </div>
+    <div class="imagesCnt" *ngIf="classNames === 'list' && int(product.imageCnt) > 0">
+        +{{ int(product.imageCnt) - 1 }} colors / images</div>
+    <div class="p-0 additionalImages col-2" *ngIf="classNames !== 'list'">
+        <div *ngFor="let img of product.product_images">
+            <img (click)="assignImage(img)" src="https://www.mdcart.in/upload/{{img.image}}" />
+        </div>
+    </div>
+</div>

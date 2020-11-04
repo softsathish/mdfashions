@@ -1,0 +1,47 @@
+<h4 class="border-bottom text-uppercase">Manage Users</h4>
+<div class="row">
+    <div class="col-md-3">
+        <form class="form-horizontal" method="POST" (submit)="submit()">
+            <div class="form-group">
+                <label class="control-label">Name:</label>
+                <input type="text" name="name" required [(ngModel)]="obj.name" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Mobile:</label>
+                <input type="text" name="mobile" required [(ngModel)]="obj.mobile" required class="form-control" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Password:</label>
+                <input type="password" name="password" required [(ngModel)]="obj.password" required class="form-control" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Type:</label>
+                <select class="form-control" [(ngModel)]="obj.type" name="type">
+                    <option *ngFor="let type of types" [ngValue]="type.id"
+                    [selected]="type.id == int(obj.type)">{{ type.name }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-9">
+        <div class="table-responsive">
+        <table class="table table-bordered table-condensed table-striped">
+            <tr>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Type</th>
+                <th>Actions</th>
+            </tr>
+            <tr *ngFor="let obj of list">
+                <td>{{ obj.name }}</td>
+                <td>{{ obj.mobile }}</td>
+                <td>{{ getTypeName(obj.type) }}</td>
+                <td><i class="fas fa-edit" (click)="edit(obj)"></i> &nbsp; <i class="far fa-trash-alt" (click)="delete(obj)"></i></td>
+            </tr>
+        </table>
+    </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<h4>Orders List</h4>
+<div *ngFor="let order of orders" class="border my-2"  (click)="navigateToOrder(order)">
+    <div>Order ID - #MDF{{ order.id }} on {{ order.ordered_date }}</div>
+    <div>Status: <b class="text-success">{{ order.order_status[order.order_status.length - 1].statusID.name }}</b></div>
+    <div>
+        <div class="border my-1 img" *ngFor="let product of order.order_products">
+            <img [src]="'https://www.mdcart.in/upload/' + (product.productID.image || product.productID.product_images[0] && product.productID.product_images[0].image)" />
+            <small>₹ {{ product.price }}</small>
+        </div>
+    </div>
+    <div class="text-success text-right"><b>Total: ₹ {{ getOrderTotal(order.order_products) }}</b></div>
+</div>
+<div class="alert alert-info" *ngIf="orders.length === 0">
+    No orders yet.
+</div>

@@ -1,0 +1,31 @@
+.heading {
+    border-bottom: 1px solid #666666; margin-bottom: 10px;
+    span {
+        font-size: 16px; text-transform: uppercase; font-weight: bold;
+    }
+}
+.categories {
+    .catCol {
+        width: 31%; height: 150px; display: inline-block; margin: 0px 1%;
+    }
+    img {
+        width: 100%; height: 100%; border: 1px solid #cccccc; border-radius: 10%;
+        object-fit: cover;
+    }
+    .ellipsisText{
+        font-size: 11px; text-align: center; text-transform: uppercase; font-weight: bold;
+    }   
+    .productCount {
+        margin-top: -14px;
+        display: block;
+        background: #000000;
+        color: #fff;
+        z-index: 9999999;
+        padding: 0px 5px;
+        opacity: 0.8;
+        font-size: 10px;
+        white-space: nowrap;
+        border-radius: 0px 0px 5px 5px;
+        text-align: center;
+    } 
+}

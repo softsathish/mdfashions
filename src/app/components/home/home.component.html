@@ -1,0 +1,29 @@
+<div class="row m-0">
+    <div class="col-md-2 col-12 p-0">
+        <h4 class="heading"><span>Featured Categories</span><a routerLink="categories">View All</a></h4>
+        <div class="categories row m-0">
+            <div class="col-3 m-0 col-md-6 catCol p-1 m-0" *ngFor="let cat of homeCategoies">
+                <a routerLink="/products/category/{{cat.categoryID}}/{{urlTitle(cat.categoryName)}}">
+                    <img *ngIf="cat.image" src="https://www.mdcart.in/upload/{{cat.image}}" />
+                    <div class="productCount">{{ cat.productCount }} Products</div>
+                    <span class="ellipsisText">{{ cat.categoryName }}</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 col-12 pr-0 p-0 pl-md-3">
+        <!-- <h4 class="heading"><span>Top 4 Ordered Products [{{topOrdersTotal}} orders]</span></h4>
+        <div class="categories row m-0">
+            <div class="col-3 m-0 col-md-6 catCol p-1 m-0" *ngFor="let product of topOrders">
+                <a [routerLink]="productURL(product.id, product.title)">
+                    <img *ngIf="product.image" src="https://www.mdcart.in/upload/{{product.image}}" />
+                    <div class="productCount">{{ product.orderCnt }} Orders</div>
+                    <span class="ellipsisText"><b>₹ {{ product.price }}</b></span>
+                </a>
+            </div>
+        </div> -->
+        <h4 class="heading"><span>Top Offers</span><a routerLink="products">View All Products</a></h4>
+        <app-products [options]="{page: 1, limit: 10}" [order]="{discount: 'desc'}"></app-products>
+        <div class="text-right"><a routerLink="products">View All Products</a></div>
+    </div>
+</div>

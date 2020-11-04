@@ -1,0 +1,11 @@
+<h4 class="heading"><span>Categories</span></h4>
+<div class="categories">
+    <div class="catCol" *ngFor="let cat of list">
+        <a routerLink="/products/category/{{cat.categoryID}}/{{productURL(cat.categoryName)}}">
+            <img *ngIf="cat.image" src="https://www.mdcart.in/upload/{{cat.image}}" />
+            <div class="productCount">{{ cat.productCount }} Products</div>    
+            <span class="ellipsisText">{{ cat.categoryName }}</span>
+        </a>
+        
+    </div>
+</div>

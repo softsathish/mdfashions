@@ -1,0 +1,48 @@
+<div class="loginBox mt-2">
+    <ul class="tabs">
+        <li [ngClass]="{'selected': selectedTab === 'login'}" (click)="selectedTab='login'">Login</li>
+        <li [ngClass]="{'selected': selectedTab === 'register'}" (click)="selectedTab='register'">Register</li>
+    </ul>
+    <div class="loginContent" *ngIf="selectedTab === 'login'">
+        <form class="form-horizontal" method="POST" (submit)="loginSubmit()">
+            <div class="form-group">
+                <label class="control-label">Mobile:</label>
+                <input type="number" [(ngModel)]="login.mobile" name="email" class="form-control" required [pattern]="mobNumberPattern" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Password:</label>
+                <input type="password" [(ngModel)]="login.password" name="password" class="form-control" required />                
+            </div>
+            <div class="form-group" *ngIf="error.login">
+                <div class="alert alert-danger">{{ error.login }}</div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary form-control">Login</button>
+            </div>
+        </form>
+    </div>
+    <div class="loginContent" *ngIf="selectedTab === 'register'">
+        <form class="form-horizontal" method="POST" (submit)="registerSubmit()">
+            <div class="form-group">
+                <label class="control-label">Name:</label>
+                <input type="text" [(ngModel)]="register.name" name="name" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Mobile:</label>
+                <input type="number" [(ngModel)]="register.mobile" name="email" class="form-control" required [pattern]="mobNumberPattern" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Password:</label>
+                <input type="password" [(ngModel)]="register.password" name="password" class="form-control" required />
+            </div>
+            <div class="form-group" *ngIf="error.register">
+                <div class="alert alert-danger">{{ error.register }}</div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success form-control">Register</button>
+            </div>
+        </form>
+    </div>
+    
+</div>
+

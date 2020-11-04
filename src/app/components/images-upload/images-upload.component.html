@@ -1,0 +1,25 @@
+<form class="form-inline" [formGroup]="myForm" method="POST" (submit)="upload()">
+    <div class="row">
+        <div class="col-8">
+            <input formControlName="file" id="file" type="file" multiple class="form-control"
+            (change)="onFileChange($event)">
+            <div *ngIf="f.file.touched && f.file.invalid" class="alert alert-danger">
+                <div *ngIf="f.file.errors.required">File is required.</div>
+            </div>
+        </div>
+        <div class="col-4">
+            <button class="btn btn-primary">Upload</button>
+        </div>
+    </div>
+</form>
+<div class="images clearfix" *ngIf="images && images.length > 0">
+    <div *ngFor="let img of images" class="imageCol">
+        <ng-container *ngIf="!img.delete">
+            <img src="https://www.mdcart.in/upload/{{ img.image }}" (click)="assignDefaultImg(img.image)" />
+            <div>
+                <i class="far fa-trash-alt" (click)="delete(img)"></i>
+                <span class="h4" *ngIf="defaultImg === img.image"><i class="fas fa-check-circle text-success"></i> Primary</span>
+            </div>
+        </ng-container>
+    </div>
+</div>

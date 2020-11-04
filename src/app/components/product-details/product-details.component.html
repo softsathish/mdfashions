@@ -1,0 +1,75 @@
+<div>
+    <h2 class="h4 productTitle m-0">{{ escapeChars(product.title) }}</h2>
+</div>
+<div class="row px-2" *ngIf="product.title">
+    <div class="col-sm-6" *ngIf="product.product_images">
+        <app-images [product]="product" (selectedImage)="selectedImage($event)"></app-images>
+    </div>
+    <div class="col-sm-6 table-responsive">
+        <h4 class="text-success my-1 border-top border-bottom">
+            <div *ngIf="!product.offerPrice"><b>₹ {{ product.price }}</b></div>
+            <div *ngIf="product.offerPrice"><del class="text-danger">₹ {{ product.price }}</del> &nbsp; <b class="text-success">₹ {{ product.offerPrice }}</b></div>
+        </h4>
+        <div *ngIf="product.offerPrice" class="offerBlock">
+            <!-- <countdown-timer [end]="product.offerEnd"></countdown-timer> -->
+            <span class="small text-uppercase">Offer Ends in</span>
+            <app-ng-countdowner [countDownTimerVisible]="true" [start]="'10/5/2017 20:21:40'"
+            [end]="product.offerEnd" (timerExpired)="offerExpired($event, product)"></app-ng-countdowner>
+        </div>
+        <div class="row border-bottom">
+            <div class="col pr-0">
+                <span class="text-info small text-uppercase">
+                    <span *ngIf="product.free_shipping"><i class="fas fa-shipping-fast"></i> Free Shipping</span>
+                    <span *ngIf="!product.free_shipping"><i class="fas fa-shipping-fast"></i> Extra Shipping charges</span>
+                </span>
+            </div>
+            <div class="col pl-0 text-right">
+                <span class="text-info small text-uppercase">
+                    <span *ngIf="product.returns"><i class="fas fa-exchange-alt"></i> Returns Available</span>
+                    <span *ngIf="!product.returns"><i class="fas fa-exchange-alt"></i> No Returns</span>
+                </span>
+            </div>
+        </div>
+        <table class="table table-condensed" *ngIf="product.product_variants && product.product_variants.length > 0">
+            <ng-container *ngFor="let variant of variants">
+                <tr class="variants" *ngIf="variant.terms.length > 0">
+                    <td width="50" class="control-label text-uppercase p-0 py-1" *ngIf="variant.terms.length > 0"><small><b>{{ variant.name }}</b></small></td>
+                    <td class="p-0 py-1">
+                        <a class="badge badge-light p-2 mx-1" *ngFor="let term of variant.terms"
+                            (click)="assignVariant(variant.name, term.variant_term_id.name, term)"
+                            [ngClass]="{'selectedVariant': selectOptions[variant.name] === term.variant_term_id.name, 'colors': variant.name === 'color'}">
+                            <span *ngIf="variant.name === 'color'" [title]="term.variant_term_id.name" [style.background]="getColorName(term.variant_term_id.name)"></span>
+                            <span *ngIf="variant.name !== 'color'">{{ term.variant_term_id.name }}</span>
+                        </a>
+                    </td>
+                </tr>
+            </ng-container>
+            
+        </table>
+        
+        <!-- <div class="mt-2" [innerHTML]="escapeChars(product.short_description)"></div> -->
+        <!-- <div *ngIf="product.product_categories && product.product_categories[0]"><b>Category: </b> {{ product.product_categories[0].categoryID.name }}</div> -->
+        <b>Description:</b>
+        <pre [innerHTML]="escapeChars(product.description)"></pre>
+        <div *ngIf="user && user.type === '0'">
+            <a class="btn btn-success" routerLink="/edit-product/{{ product.id }}">Edit</a>
+        </div>
+    </div>
+</div>
+<div class="stickyFooter">
+    <div class="row">
+        <div class="col-8 pr-0">
+            <a *ngIf="!cartExists" class="btn btn-success rounded-0" (click)="addToCart(product)"> 
+                <span class="text-left"><i class="fas fa-cart-plus"></i> Add to Cart</span>
+            </a>
+            <a *ngIf="cartExists" class="btn btn-info rounded-0" routerLink="/cart"> 
+                <span class="text-left">Go to Cart</span>
+            </a>
+        </div>
+        <div class="col-4 pl-0">
+            <a class="btn btn-primary rounded-0" href="https://wa.me/917892904939?text={{getWhatsAppText()}}" target="_blank"> 
+                <span class="text-left"><i class="fab fa-whatsapp"></i> Enquire</span> 
+            </a>
+        </div>
+    </div>
+</div>

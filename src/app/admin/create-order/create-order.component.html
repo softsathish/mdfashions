@@ -1,0 +1,41 @@
+<form class="form-horizontal" method="POST">
+    <div class="form-group">
+        <label>Select Customer</label>
+        <input class="form-control" type="text" name="customertxt" [(ngModel)]="orderComp.customerTxt" (change)="searchCustomer($event)" placeholder="Enter Name or Mobile number" />
+    </div>
+    <div class="form-group" *ngIf="customers.length > 0">
+        <div class="customersList">
+            <table class="table table-condensed small table-striped">
+                <tr>
+                    <th class="p-0">Name</th>
+                    <th class="p-0">Mobile</th>
+                </tr>
+                <tr *ngFor="let cust of customers; let i = index;" (click)="selectCustomer(cust)">
+                    <td>{{ cust.name }}</td>
+                    <td>{{ cust.mobile }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="form-group" *ngIf="selectedCustomer.mobile">
+        <label class="control-label">Selected Customer: {{ selectedCustomer.name }} | {{ selectedCustomer.mobile }}</label>
+    </div>
+    <div class="form-group">
+        <label>Add Product</label>
+        <input class="form-control" type="text" name="productTxt" [(ngModel)]="orderComp.productTxt" (change)="searchProduct($event)" placeholder="Enter Product Title" />
+    </div>
+    <div class="form-group" *ngIf="customers.length > 0">
+        <div class="customersList">
+            <table class="table table-condensed small table-striped">
+                <tr>
+                    <th class="p-0">Name</th>
+                    <th class="p-0">Mobile</th>
+                </tr>
+                <tr *ngFor="let cust of customers; let i = index;" (click)="selectCustomer(cust)">
+                    <td>{{ cust.name }}</td>
+                    <td>{{ cust.mobile }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>

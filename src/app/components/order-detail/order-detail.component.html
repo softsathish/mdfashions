@@ -1,0 +1,62 @@
+<div *ngIf="order" class="pt-3">
+    <div>Order ID - <b>#MDF{{ order.id }}</b> on {{ order.ordered_date }}</div>
+    <div>Status: <b class="text-success">{{ order.order_status[order.order_status.length - 1].statusID.name }}</b>
+    <p>{{ order.order_status[order.order_status.length - 1].comments }}</p></div>
+    <div>
+        <div class="border my-1" *ngFor="let product of order.order_products">
+            <div class="row">
+                <div class="col-3">
+                    <img [src]="'https://www.mdcart.in/upload/' + (order.image || product.image)"
+                        style="max-width: 100%; max-height: 100%" />
+                </div>
+                <div class="col-9">
+                    <h6 class="m-0"><a class="ellipsisText"
+                            [routerLink]="productURL(product.productID.id, product.productID.title)">{{ escapeChars(product.productID.title) }}</a>
+                    </h6>
+                    <div *ngIf="user && user.type === '0'">
+                        <small *ngIf="order.order_status[order.order_status.length - 1].statusID.id != '1'">₹ {{ product.price }}</small>
+                        <form *ngIf="order.order_status[order.order_status.length - 1].statusID.id === '1'" (submit)="updateProduct(product)">
+                            <div class="form-group">
+                                <label class="control-label">Buying Price:</label>
+                                <input type="text" [(ngModel)]="product.bprice" name="bprice" />
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Order Price:</label>
+                                <input type="text" [(ngModel)]="product.price" name="price" />
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-success">Update</button>
+                                &nbsp; <label class="control-label text-success">Profit: ₹ {{ product.price - product.bprice }}</label>
+                            </div>
+                        </form>
+                    </div>
+                    <div *ngIf="!user || user.type !== '0'"><small *ngIf="order.order_status[0].statusID.id != '1'">₹ {{ product.price }}</small></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="text-success text-right"><b>Total: ₹ {{ order.total }}</b></div> -->
+    <form *ngIf="user && user.type === '0'" (submit)="updateStatus()">
+        <div class="form-group">
+            <label class="control-label">Status:</label>
+            <select class="form-control" [(ngModel)]="tempStatus" name="status">
+                <option *ngFor="let status of statuses" [ngValue]="status.id">{{ status.name }}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Comments: (Optional)</label>
+            <textarea class="form-control" [(ngModel)]="comments" name="comments"></textarea>
+        </div>
+        <button class="form-control btn btn-success">Update Status</button>
+    </form>
+    <div><b>Customer Details:</b></div>
+    <div>
+        {{ order.name }}, <br />{{ order.address }}, <br />{{ order.mobile }}
+    </div>
+    <div>
+        <h4>Status History</h4>
+        <div *ngFor="let status of order.order_status">
+            <span class="text-success">{{ status.statusID.name }}</span>  &nbsp;<i>on</i> {{ status.timestamp }}
+        </div>
+    </div>
+</div>

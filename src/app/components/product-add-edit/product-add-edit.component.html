@@ -1,0 +1,100 @@
+<form class="form-horizontal mt-2" method="POST" (submit)="addEditProduct()">
+    <div class="form-group">
+        <h4 class="border-bottom">Add Product</h4>
+    </div>
+    <div class="form-group">
+        <label class="contrl-label">Title: </label>
+        <input class="form-control" type="text" name="title" [(ngModel)]="product.title" />
+    </div>
+    <div class="form-group">
+        <label class="contrl-label">Category:</label>
+        <select class="form-control" [(ngModel)]="product.product_categories" name="category" multiple="multiple">
+            <option *ngFor="let cat of categories" [ngValue]="cat"
+            >{{ cat.parentCategory }} : {{ cat.name }}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Product Images: ({{ product.product_images?.length }} images uploaded) </label>
+        <app-images-upload [images]="product.product_images" (updatedImages)="updatedImages($event)"
+        (deleteImage)="deleteImage($event)" (assignDefault)="assignDefault($event)" [defaultImg]="product.image"></app-images-upload>
+    </div>
+    <div class="form-group">
+        <label><input type="checkbox" [(ngModel)]="product.splitByImage" name="splitByImage" /> Split By Image</label>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <div class="input-group-prepend"> <span class="input-group-text p-1" id="basic-addon1">Buying Price (₹)</span></div>
+            <input class="form-control" type="text" name="bprice" [(ngModel)]="product.bprice" aria-describedby="basic-addon1" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <div class="input-group-prepend"> <span class="input-group-text p-1" id="basic-addon1">Selling Price (₹)</span></div>
+            <input class="form-control" type="text" name="price" [(ngModel)]="product.price" aria-describedby="basic-addon1" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <div class="input-group-prepend"> <span class="input-group-text p-1" id="basic-addon1">Offer Price (₹) &nbsp; </span></div>
+            <input class="form-control" type="text" name="offerprice" [(ngModel)]="product.offerPrice" aria-describedby="basic-addon1" />
+        </div>
+    </div>
+    <div class="form-group" *ngIf="product.offerPrice">
+        <label class="control-label">Offer Start DateTime:<br /></label>
+        <div class="form-inline">
+            <input type="datetime-local" [(ngModel)]="product.offerStart" [value]="product.offerStart" name="offerStart">
+        </div>
+    </div>
+    <div class="form-group" *ngIf="product.offerPrice">
+        <label class="control-label">Offer End DateTime:<br /></label>
+        <div class="form-inline">
+            <input type="datetime-local" [(ngModel)]="product.offerEnd" name="offerEnd">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col">
+            <label><input type="checkbox" [(ngModel)]="product.free_shipping" name="freeShipping" /> Free Shipping</label>
+        </div>
+        <div class="col">
+            <label><input type="checkbox" [(ngModel)]="product.returns" name="returns" /> Returns</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="contrl-label">Description: </label>
+        <textarea class="form-control" name="description" [(ngModel)]="product.description" rows="8"></textarea>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <div class="input-group-prepend"> <span class="input-group-text p-1" id="basic-addon1">Code: </span></div>
+            <input class="form-control" type="text" name="code" [(ngModel)]="product.code" aria-describedby="basic-addon1" />
+        </div>
+    </div>
+    <div class="form-group" *ngFor="let variant of variants; let i = index;">
+        <label class="control-label text-uppercase">{{ variant.name }}</label>
+        <select [name]="variant.name" multiple class="form-control" [(ngModel)]="product.variants[i][variant.id]">
+            <option *ngFor="let term of variant.variant_terms" [ngValue]="term.id">{{ term.name }}</option>
+        </select>
+    </div>
+    <!-- <div class="form-group">
+        <div class="text-right"><button class="btn btn-primary" type="button" (click)="addVariant()">+ Add Variant</button></div>
+        <div *ngFor="let variant of product.product_variants; let i = index">
+            <select [(ngModel)]="variant.variant_term_id" name="variant_{{variant.id}}_{{i}}" class="form-control">
+                <option *ngFor="let term of terms" [value]="term.id" [selected]="term.id === int(variant.variant_term_id)">{{ getVariant(term.variant_id).name }}: {{ term.name }}</option>
+            </select>
+            <div class="images clearfix" *ngIf="product.product_images && product.product_images.length > 0">
+                <span *ngFor="let img of product.product_images" (click)="selectImage(variant, img.image)"
+                [ngClass]="{'selected' : variant.images === img.image}"><img src="https://www.mdcart.in/upload/{{ img.image }}" /></span>
+            </div>
+            <b><small>{{ variant.images }}</small></b>
+            <div class="form-group">
+                <label class="control-label">Price: (optional)</label>
+                <input type="text" name="price_{{i}}" [(ngModel)]="variant.price" class="form-control" />
+            </div>
+            <div><i class="far fa-trash-alt" (click)="deleteVariant(variant)"></i></div>
+        </div>
+    </div> -->
+    <div class="form-group">
+        <!-- <button type="button" class="btn btn-primary" (click)="generateVariants()">Variants</button> -->
+        <button class="btn btn-primary">Submit</button>
+    </div>
+</form>
